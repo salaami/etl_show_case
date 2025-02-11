@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "etl-show-case"
+version = "0.1.0"
+description = ""
+authors = ["Salem Salleh"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry"

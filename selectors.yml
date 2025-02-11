@@ -1,0 +1,18 @@
+selectors:
+
+  - name: normalization
+    description: >
+      Normalization of raw data.
+    definition:
+      union:
+        - method: path
+          value: models/normalization 
+
+  - name: provisioning
+    description: >
+      Transformations for data provisioning.
+    definition:
+      union:
+        - method: path
+          value: models/provisioning 
+

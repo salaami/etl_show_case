@@ -1,0 +1,13 @@
+transformations:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST') }}"
+      dbname: "{{ env_var('POSTGRES_DB') }}"
+      port: "{{ env_var('POSTGRES_PORT') }}"
+      user: "{{ env_var('POSTGRES_USER') }}" 
+      pass: "{{ env_var('POSTGRES_PASSWORD') }}"
+      schema: "{{ env_var('POSTGRES_SCHEMA') }}"
+      sslmode: disable
+      threads: 1
