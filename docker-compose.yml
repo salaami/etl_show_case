@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+  dbt:
+    container_name: dbt
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .dbt_env
+    volumes:
+      - ./dbt_project.yml:/dbt/dbt_project.yml:rw
+      - ./.dbt/profiles.yml:/dbt/.dbt/profiles.yml:rw
+      - ./packages.yml:/dbt/packages.yml:rw
+      - ./selectors.yml:/dbt/selectors.yml:rw
+      - ./analyses:/dbt/analyses:rw
+      - ./data:/dbt/data:rw
+      - ./macros:/dbt/macros:rw
+      - ./models:/dbt/models:rw
+      - ./snapshots:/dbt/snapshots:rw
+      - ./tests:/dbt/tests:rw
+    networks:
+      - ntw_dwh
+    depends_on:
+      - postgres
+    tty: true  # Keeps the container running
+
+  postgres:
+    container_name: postgres
+    image: postgres:15  # Use official image instead of custom build unless needed
+    restart: always
+    env_file:
+      - .pg_env 
+    ports:
+      - "5432:5432"
+    networks:
+      - ntw_dwh
+    volumes:
+      - dbdata:/var/lib/postgresql/data  # Persist database storage
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql 
+
+networks:
+  ntw_dwh:
+
+volumes: 
+  dbdata:  # Named volume for PostgreSQL persistence
+

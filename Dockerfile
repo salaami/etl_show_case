@@ -1,0 +1,34 @@
+FROM python:3.12.0
+
+# Set environment variables
+ENV DBT_DIR /dbt
+ENV DBT_PROFILES_DIR ${DBT_DIR}
+
+# Update and install system packages
+RUN apt-get update -y
+RUN apt-get install -y postgresql-client
+
+# Install dbt
+RUN pip install -U pip
+RUN pip install dbt-postgres
+
+# Set user
+RUN install -o nobody -d ${DBT_DIR}
+USER nobody
+
+# Copy dbt files to container
+COPY dbt_project.yml ${DBT_DIR}/dbt_project.yml
+COPY .dbt/profiles.yml ${DBT_DIR}/.dbt/profiles.yml
+COPY packages.yml ${DBT_DIR}/packages.yml
+COPY selectors.yml ${DBT_DIR}/selectors.yml
+COPY analyses ${DBT_DIR}/analyses
+COPY data ${DBT_DIR}/data
+COPY macros ${DBT_DIR}/macros
+COPY models ${DBT_DIR}/models
+COPY snapshots ${DBT_DIR}/snapshots
+COPY tests ${DBT_DIR}/tests
+
+#Set working directory
+WORKDIR ${DBT_DIR}
+
+RUN dbt deps
